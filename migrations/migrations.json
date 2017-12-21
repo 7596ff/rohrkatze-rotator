@@ -1,0 +1,22 @@
+{
+    "2017-12-20T11:07:06.580Z": {
+        "id": "BIGINT NOT NULL",
+        "name": "TEXT",
+        "channelCD": "INT DEFAULT 0",
+        "memberCD": "INT DEFAULT 0",
+        "locale": "TEXT DEFAULT 'en'",
+        "activity": "BIGINT",
+        "timeout": "INT",
+        "meme": "BOOLEAN",
+        "dont": "BOOLEAN",
+        "emoji": "TEXT DEFAULT '⭐'",
+        "slowrole": "BIGINT",
+        "starboard": "BIGINT",
+        "pinboardin": "BIGINT",
+        "pinboardout": "BIGINT",
+        "cleanpins": "BOOLEAN",
+        "rolestate": "BOOLEAN",
+        "lasttime": "BIGINT",
+        "current": "BIGINT"
+    }
+}
