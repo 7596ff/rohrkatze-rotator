@@ -12,7 +12,7 @@ async function drawGrid(array) {
         await base.composite(
             image,
             index % 5 * 100,
-            Math.floor(index / 5)
+            Math.floor(index / 5) * 100
         );
     }
 
