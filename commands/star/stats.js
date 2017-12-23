@@ -30,12 +30,14 @@ async function embed(ctx, data) {
         }, {
             name: ctx.strings.get("star_stats_top_members"),
             value: data.members
+                .slice(0, 3)
                 .map((member, index) => `${trophies[index]} <@${member.id}> with **${member.stars}** stars`)
                 .join("\n"),
             inline: true
         }, {
             name: ctx.strings.get("star_stats_top_starrers"),
             value: data.starrers
+                .slice(0, 3)
                 .map((member, index) => `${trophies[index]} <@${member.id}> with **${member.stars}** stars`)
                 .join("\n"),
             inline: true
