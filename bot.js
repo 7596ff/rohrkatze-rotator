@@ -117,7 +117,7 @@ async function processPin(message) {
 
 const methods = {
     scoreEmojis: async function(message) {
-        if (message.member.bot) return;
+        if (message.author.bot) return;
     
         let emojis = message.content.match(customEmoji);
         if (!emojis) return;
@@ -131,7 +131,7 @@ const methods = {
         }
     },
     addActivity: async function(message) {
-        if (message.member.bot) return;
+        if (message.author.bot) return;
 
         let row = await client.getGuild(message.channel.guild.id);
         if (!row.activity) return;
