@@ -1,7 +1,5 @@
 const snekfetch = require("snekfetch");
 
-const image = /(https?:\/\/.*\.(?:png|jpg|jpeg))/g;
-
 async function checks(member, ctx) {
     return member.permission.has("manageGuild");
 }
@@ -13,7 +11,7 @@ async function exec(message, ctx) {
         url = message.mentions[0].staticAvatarURL.replace("jpg?size=128", "png?size=2048");
     }
 
-    if (image.test(ctx.content)) {
+    if (/(https?:\/\/.*\.(?:png|jpg|jpeg))/g.test(ctx.content)) {
         url = ctx.content;
     }
 
