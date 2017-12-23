@@ -1,6 +1,5 @@
 const FuzzySet = require("fuzzyset.js");
 const Jimp = require("jimp");
-Jimp.prototype.getBuffer = require("bluebird").promisify(Jimp.prototype.getBuffer);
 
 module.exports = {
     today: function(now)  {

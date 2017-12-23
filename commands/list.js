@@ -26,19 +26,30 @@ async function exec(message, ctx) {
         return ctx.failure(ctx.strings.get("rotate_no_images"));
     }
 
-    let grid = await drawGrid(folder.map((file) => `${path}/${file}`));
-    let msg = [];
+    let results = [];
 
     while (folder.length) {
-        msg.push(folder.splice(0, 5).join(" "));
+        let group = folder.splice(0, 25);
+        let grid = await drawGrid(group.map((file) => `${path}/${file}`));
+        let buffer = await grid.getBuffer(Jimp.MIME_PNG);
+
+        let msg = [];
+        while (group.length) {
+            msg.push(group.splice(0, 5).join(" "));
+        }
+
+        results.push({
+            text: msg.join("\n"),
+            file: {
+                name: "list.png",
+                file: buffer
+            }
+        });
     }
 
-    grid.getBuffer(grid.getMIME(), (err, buffer) => {
-        return ctx.code("js", msg.join("\n"), {
-            name: "list.png",
-            file: buffer
-        });
-    });
+    for (let result of results) {
+        await ctx.code("js", result.text, result.file);
+    }
 }
 
 module.exports = {

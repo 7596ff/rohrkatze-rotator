@@ -4,6 +4,9 @@ const Redis = require("redis");
 const CronJob = require("cron").CronJob;
 require("bluebird").promisifyAll(Redis);
 
+// monkaS
+require("jimp").prototype.getBuffer = require("bluebird").promisify(require("jimp").prototype.getBuffer);
+
 const client = new Casca(config);
 client.redis = Redis.createClient();
 client.util = require("./util");
