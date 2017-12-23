@@ -52,7 +52,11 @@ client.once("ready", () => {
     });
 
     client.jobs.activity = new CronJob("0 * * * *", () => {
-        decayActivity().catch((error) => console.error(error));
+        client.util.decayActivity(client).catch(console.error);
+    }, null, true);
+
+    client.jobs.cleanup = new CronJob("0 0 * * *", () => {
+        client.util.decayEmojis(client).catch(console.error);
     }, null, true);
 });
 
@@ -83,46 +87,7 @@ client.on("command", (output, result) => {
     }
 });
 
-async function decayActivity() {
-    let res = await client.pg.query("SELECT id, activity FROM guilds WHERE activity <> null;");
-    let rows = res.rows.filter((row) => row.activity != 0);
-
-    let amount = 0;
-
-    for (let row of rows) {
-        let guild = client.guilds.get(row.id);
-        if (!guild) continue;
-
-        if (!guild.roles.get(row.activity)) continue;
-
-        let members = guild.members.filter((member) => member.roles.includes(row.activity));
-        if (!members.length) continue;
-
-        for (let member of members) {
-            let key = `katze:activity:${row.id}:${member.id}`;
-
-            let count = await client.redis.getAsync(key);
-            let newCount = Math.floor(count * 0.7);
-            await client.redis.setAsync(key, newCount);
-
-            if (newCount > 10) continue;
-
-            await client.redis.setAsync(key, 0);
-            try {
-                await member.removeRole(row.activity);
-            } catch (error) {
-                console.error(`${guild.id}/${guild.name} - ${member.id}/${member.username}`);
-                console.error(error.response);
-            }
-
-            amount += 1;
-        }
-    }
-
-    if (amount > 0) console.log(`${new Date().toJSON()} removed ${amount} roles from ${results.length} different guilds`);
-}
-
-let customEmoji = /<:[a-zA-Z1-9-_]{2,}:\d{17,20}>/g;
+let customEmoji = /<a?:[a-zA-Z1-9-_]{2,}:\d{17,20}>/g;
 
 async function processPin(message) {
     let row;
