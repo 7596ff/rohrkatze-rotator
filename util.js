@@ -28,8 +28,8 @@ module.exports = {
         });
 
         await client.pg.query({
-            text: "UPDATE guilds SET current = $1 WHERE id = $2;",
-            values: [chosen.replace(/\D/g, ""), guild.id]
+            text: "UPDATE guilds SET current = $1, lasttime = $2 WHERE id = $3;",
+            values: [chosen.replace(/\D/g, ""), Date.now(), guild.id]
         });
 
         delete client.guildCache[guild.id];
