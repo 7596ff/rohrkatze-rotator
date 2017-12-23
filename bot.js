@@ -159,7 +159,7 @@ client.bot.on("messageCreate", async (message) => {
     
     for (let method in methods) {
         try {
-            methods[method](message);
+            await methods[method](message);
         } catch (error) {
             console.error(error);
             console.error(`error in ${method}\nchannel id:${message.channel.id} message id:${message.id}`);
@@ -363,7 +363,7 @@ const addmethods = {
 client.bot.on("guildMemberAdd", async (guild, member) => {
     for (let method in addmethods) {
         try {
-            addmethods[method](guild, member);
+            await addmethods[method](guild, member);
         } catch (error) {
             console.error(error);
             console.error(`error on method ${method}\n${guild.id}/${guild.name} - ${member.id}/${member.name}`);
