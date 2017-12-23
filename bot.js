@@ -141,7 +141,14 @@ const methods = {
         await client.redis.incrAsync(key);
 
         if (!~message.member.roles.indexOf(row.activity)) {
-            await message.member.addRole(row.activity);
+            if (message.channel.guild.roles.get(row.activity)) {
+                try { await message.member.addRole(row.activity); } catch (error) { throw error; }
+            } else {
+                await client.pg.query({
+                    text: "UPDATE guilds SET activity = null WHERE id = $1;",
+                    values: [message.channel.guild.id]
+                });
+            }
         }
     }
 };
