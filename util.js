@@ -1,4 +1,6 @@
 const FuzzySet = require("fuzzyset.js");
+const Jimp = require("jimp");
+Jimp.prototype.getBuffer = require("bluebird").promisify(Jimp.prototype.getBuffer);
 
 module.exports = {
     today: function(now)  {
@@ -17,6 +19,10 @@ module.exports = {
         let chosen = this.rand(folder);
         let image = await client.fs.readFileAsync(`${path}/${chosen}`);
 
+        if (row.meme && Math.floor(Math.random() * 10) === 0) {
+            image = await this.meme(image);
+        }
+
         await guild.edit({
             icon: "data:image/jpg;base64," + image.toString("base64")
         });
@@ -29,8 +35,15 @@ module.exports = {
         delete client.guildCache[guild.id];
         console.log(`${new Date().toJSON()} [${guild.id}/${guild.name}] :: ROTATE`);
     },
-    meme: async function() {
-        return "aaa"
+    meme: async function(image) {
+        let base = await Jimp.read(image);
+        let meme = await Jimp.read("./fake_notify.png");
+
+        await base.resize(128, 128);
+        await base.composite(meme, 0, 0);
+
+        let result = await base.getBuffer(Jimp.MIME_PNG);
+        return result;
     },
     getFolder: async function(client, guild) {
         let folder, path;
