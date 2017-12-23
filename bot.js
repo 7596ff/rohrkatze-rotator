@@ -328,19 +328,23 @@ client.bot.on("messageReactionRemove", (message, emoji, userID) => onReactionCha
 
 const addmethods = {
     rolestate: async function(guild, member) {
+        if (!guild.members.get(client.bot.user.id).permission.has("manageRoles")) return;
+
         let row = await client.getGuild(guild.id);
         if (!row.rolestate) return;
 
         let reply = await client.redis.getAsync(`katze:rolestate:${guild.id}:${member.id}`);
         if (reply) reply = JSON.parse(reply);
 
-        if (!reply.length) return;
+        if (!reply || !reply.length) return;
 
         for (let role of reply) {
             try { await member.addRole(role); } catch (error) {}
         }
     },
     inviteCode: async function (guild, member) {
+        if (!guild.members.get(client.bot.user.id).permission.has("manageGuild")) return;
+
         let invites = await guild.getInvites();
         let unique;
         for (let oldInvite of client.invites.values()) {
