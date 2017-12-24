@@ -23,6 +23,7 @@ async function exec(message, ctx) {
 module.exports = {
     name: "delete",
     category: "rotate",
+    aliases: ["remove"],
     typing: true,
     exec
 };
