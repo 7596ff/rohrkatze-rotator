@@ -15,7 +15,7 @@ async function exec(message, ctx) {
         url = ctx.content;
     }
 
-    if (message.attachments.length && image.test(message.attachments[0].url)) {
+    if (message.attachments.length && /(https?:\/\/.*\.(?:png|jpg|jpeg))/g.test(message.attachments[0].url)) {
         url = message.attachments[0].url;
     }
 
