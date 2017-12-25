@@ -92,13 +92,13 @@ module.exports = {
             .map((role) => role.role);
     },
     decayActivity: async function(client) {
-        let res = await client.pg.query("SELECT id, activity FROM guilds WHERE activity <> null;");
-        let rows = res.rows.filter((row) => row.activity != 0);
+        let res = await client.pg.query("SELECT id, activity FROM guilds;");
+        let rows = res.rows.filter((row) => row.activity && row.activity != 0);
 
         let amount = 0;
 
         for (let row of rows) {
-            let guild = client.guilds.get(row.id);
+            let guild = client.bot.guilds.get(row.id);
             if (!guild) continue;
 
             if (!guild.roles.get(row.activity)) continue;
