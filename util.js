@@ -127,7 +127,7 @@ module.exports = {
             }
         }
 
-        if (amount > 0) console.log(`${new Date().toJSON()} removed ${amount} roles from ${results.length} different guilds`);
+        if (amount > 0) console.log(`${new Date().toJSON()} removed ${amount} roles from ${rows.length} different guilds`);
     },
     decayEmojis: async function(client) {
         let week = this.lastWeek();
