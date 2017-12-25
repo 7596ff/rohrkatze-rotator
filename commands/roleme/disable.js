@@ -12,8 +12,13 @@ async function exec(message, ctx) {
     return message.addReaction("greenTick:357246808767987712");
 }
 
+async function checks(member, ctx) {
+    return member.permission.has("manageRoles");
+}
+
 module.exports = {
     name: "disable",
     category: "settings",
+    checks,
     exec
 };

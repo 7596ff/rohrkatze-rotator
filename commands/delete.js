@@ -20,10 +20,15 @@ async function exec(message, ctx) {
     });
 }
 
+async function checks(member, ctx) {
+    return member.permission.has("manageGuild");
+}
+
 module.exports = {
     name: "delete",
     category: "rotate",
     aliases: ["remove"],
     typing: true,
+    checks,
     exec
 };

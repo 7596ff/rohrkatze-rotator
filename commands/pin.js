@@ -1,6 +1,5 @@
 async function exec(message, ctx) {
     if (!ctx.row.pinboardout) return ctx.failure(ctx.strings.get("pin_no_pinboard"));
-    if (!message.member.permission.has("manageMessages")) return ctx.failure(ctx.strings.get("bot_no_permission"));
 
     let id = ctx.options[0];
     if (!id) return ctx.failure(ctx.strings.get("pin_no_id"));
@@ -20,9 +19,13 @@ async function exec(message, ctx) {
     await ctx.client.bot.createMessage(ctx.row.pinboardout, { embed });
     return ctx.success("");
 }
+async function checks(member, ctx) {
+    return member.permission.has("manageMessages");
+}
 
 module.exports = {
     name: "pin",
     category: "utility",
+    checks,
     exec
 };

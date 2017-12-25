@@ -13,8 +13,13 @@ async function exec(message, ctx) {
     return ctx.success(ctx.strings.get("roleme_create", role.name));
 }
 
+async function checks(member, ctx) {
+    return member.permission.has("manageRoles");
+}
+
 module.exports = {
     name: "create",
     category: "settings",
+    checks,
     exec
 };

@@ -1,9 +1,5 @@
 const snekfetch = require("snekfetch");
 
-async function checks(member, ctx) {
-    return member.permission.has("manageGuild");
-}
-
 async function exec(message, ctx) {
     let url = false;
 
@@ -42,6 +38,10 @@ async function exec(message, ctx) {
 
     ctx.success(ctx.strings.get("pls_success", filename));
     return img.body;
+}
+
+async function checks(member, ctx) {
+    return member.permission.has("manageGuild");
 }
 
 module.exports = {
