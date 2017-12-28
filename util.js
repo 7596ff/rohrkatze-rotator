@@ -50,13 +50,13 @@ module.exports = {
             folder = await client.fs.readdirAsync(path = `./guilds/${guild.id}`);
 
             if (folder.length === 0) {
-                return "no_images";
+                return { error: "no_images" };
             } else if (folder.length === 1) {
-                return "one_image";
+                return { error: "one_image" };
             }
         } catch (error) {
             if (error.code === "ENOENT") {
-                return "no_images";
+                return { error: "no_images" };
             }
             
             throw error;
@@ -130,7 +130,7 @@ module.exports = {
         if (amount > 0) console.log(`${new Date().toJSON()} removed ${amount} roles from ${rows.length} different guilds`);
     },
     decayEmojis: async function(client) {
-        let week = this.lastWeek();
+        let week = this.lastWeek().map((key) => `emojis:${key}`);
         let keys = await client.redis.keysAsync("emojis:*");
         let old = keys.filter((key) => !week.includes(key));
         await client.redis.delAsync(...old);
