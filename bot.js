@@ -300,6 +300,17 @@ async function onReactionChange(message, emoji, userID, add) {
         }
     }
 
+    if (!client.bot.channelGuildMap[guild.starboard]) {
+        await client.pg.query({
+            text: "UPDATE guilds SET starboard = null WHERE id = $1;",
+            values: [guild.id]
+        });
+
+        delete client.guildCache[guild.id];
+
+        return;
+    }
+
     let embed = await client.commands.star.subcommands.show.embed(null, { message });
     let msg = {
         content: `⭐ **${row.stars}** ${message.channel.mention}`,
