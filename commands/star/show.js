@@ -51,7 +51,10 @@ async function exec(message, ctx) {
     let msg = await ctx.client.bot.getMessage(row.channel, row.message);
 
     let result = await embed(null, { message: msg });
-    return ctx.embed(result);
+    return ctx.send({
+        content: `⭐ **${row.stars}** ${message.channel.mention}`,
+        embed: result
+    });
 }
 
 module.exports = {
