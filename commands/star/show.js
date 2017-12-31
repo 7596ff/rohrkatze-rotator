@@ -52,7 +52,7 @@ async function exec(message, ctx) {
 
     let result = await embed(null, { message: msg });
     return ctx.send({
-        content: `⭐ **${row.stars}** ${message.channel.mention}`,
+        content: `⭐ **${row.stars}** ${msg.channel.mention}`,
         embed: result
     });
 }
