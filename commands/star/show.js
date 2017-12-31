@@ -37,6 +37,21 @@ async function exec(message, ctx) {
     if (!ctx.options[1] || isNaN(ctx.options[1])) {
         return ctx.failure(ctx.strings.get("star_show_failure"));
     }
+
+    let res = await ctx.client.pg.query({
+        text: "SELECT * FROM starboard WHERE message = $1;",
+        values: [ctx.options[1]]
+    });
+
+    if (res.rows.length < 1) {
+        return ctx.failure(ctx.strings.get("star_show_not_found"))
+    }
+
+    let row = res.rows[0];
+    let msg = await ctx.client.bot.getMessage(row.channel, row.message);
+
+    let result = await embed(null, { message: msg });
+    return ctx.embed(result);
 }
 
 module.exports = {

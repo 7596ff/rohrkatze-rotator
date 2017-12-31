@@ -33,5 +33,6 @@
     "roleme_enable_already": "this role is already a roleme role!",
     "migratepins_no_pinboard": "pls setup pinboard in and out pls!",
     "migratepins_success": "pins migrated.",
-    "link_no_role": "pleas provide a role id!"
+    "link_no_role": "pleas provide a role id!",
+    "star_show_not_found": "can't find this star :("
 }
