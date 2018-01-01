@@ -6,16 +6,19 @@ async function drawGrid(array) {
         Math.ceil(array.length / 5) * 100
     );
 
+    let tasks = [];
+
     for (let index in array) {
         let image = await Jimp.read(array[index]);
         await image.resize(100, 100);
-        await base.composite(
+        tasks.push(base.composite(
             image,
             index % 5 * 100,
             Math.floor(index / 5) * 100
-        );
+        ));
     }
 
+    await Promise.all(tasks);
     return base;
 }
 
