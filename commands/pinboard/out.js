@@ -1,2 +1,2 @@
 const CommandTemplate = require("casca").CommandTemplate;
-module.exports = new CommandTemplate("pinboardout", { type: "channel", permission: "manageMessages" });
+module.exports = new CommandTemplate("out", { type: "channel", permission: "manageMessages", column: "pinboardout" });
