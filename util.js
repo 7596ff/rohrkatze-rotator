@@ -10,13 +10,17 @@ module.exports = {
         return array[Math.floor(Math.random() * array.length)];
     },
     rotate: async function(client, guild) {
-        let { error, folder, path } = await this.getFolder(client, guild);
-        if (error) return error;
+        let data;
+        try {
+            data = await this.getFolder(client, guild);
+        } catch (error) {
+            return error;
+        }
 
         let row = await client.getGuild(guild.id);
-        folder = folder.filter((file) => !file.includes(row.current));
+        data.folder = data.folder.filter((file) => !file.includes(row.current));
         let chosen = this.rand(folder);
-        let image = await client.fs.readFileAsync(`${path}/${chosen}`);
+        let image = await client.fs.readFileAsync(`${data.path}/${chosen}`);
 
         if (row.meme && Math.floor(Math.random() * 10) === 0) {
             image = await this.meme(image);
@@ -50,19 +54,19 @@ module.exports = {
             folder = await client.fs.readdirAsync(path = `./guilds/${guild.id}`);
 
             if (folder.length === 0) {
-                return { error: "no_images" };
+                throw "no_images";
             } else if (folder.length === 1) {
-                return { error: "one_image" };
+                throw "one_image";
             }
         } catch (error) {
             if (error.code === "ENOENT") {
-                return { error: "no_images" };
+                throw "no_images";
             }
             
             throw error;
         }
 
-        return { error: null, folder, path };
+        return { folder, path };
     },
     checkMatch(names, name) {
         names = new FuzzySet(names);

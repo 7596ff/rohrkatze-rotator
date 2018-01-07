@@ -23,17 +23,20 @@ async function drawGrid(array) {
 }
 
 async function exec(message, ctx) {
-    let { error, folder, path } = await ctx.client.util.getFolder(ctx.client, message.channel.guild);
-    
-    if (error === "no_images") {
-        return ctx.failure(ctx.strings.get("rotate_no_images"));
+    let data;
+    try {
+        data = await ctx.client.util.getFolder(ctx.client, message.channel.guild);
+    } catch (error) {
+        if (error === "no_images") {
+            return ctx.failure(ctx.strings.get("rotate_no_images"));
+        }
     }
 
     let results = [];
 
-    while (folder.length) {
-        let group = folder.splice(0, 25);
-        let grid = await drawGrid(group.map((file) => `${path}/${file}`));
+    while (data.folder.length) {
+        let group = data.folder.splice(0, 25);
+        let grid = await drawGrid(group.map((file) => `${data.path}/${file}`));
         let buffer = await grid.getBuffer(Jimp.MIME_PNG);
 
         let msg = [];
