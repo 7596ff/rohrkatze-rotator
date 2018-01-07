@@ -19,7 +19,7 @@ module.exports = {
 
         let row = await client.getGuild(guild.id);
         data.folder = data.folder.filter((file) => !file.includes(row.current));
-        let chosen = this.rand(folder);
+        let chosen = this.rand(data.folder);
         let image = await client.fs.readFileAsync(`${data.path}/${chosen}`);
 
         if (row.meme && Math.floor(Math.random() * 10) === 0) {
