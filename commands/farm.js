@@ -1,12 +1,20 @@
 async function exec(message, ctx) {
-    let member = message.author.id;
+    let member, discrim;
 
     if (ctx.content.length) {
         member = ctx.findMember(ctx.content);
-        if (!member) return ctx.send(ctx.strings.get("bot_no_member"));
+        if (!member) {
+            if (ctx.content.length == 4 && !isNaN(parseInt(ctx.content))) { // assume its a number
+                discrim = ctx.content;
+            } else {
+                return ctx.send(ctx.strings.get("bot_no_member"));
+            }
+        }
+    } else {
+         member = message.author.id;
     }
 
-    let discrim = ctx.client.bot.users.get(member).discriminator;
+    if (!discrim) discrim = ctx.client.bot.users.get(member).discriminator;
     if (ctx.content.length === 4 && !isNaN(ctx.content)) {
         discrim = parseInt(ctx.content);
     }
