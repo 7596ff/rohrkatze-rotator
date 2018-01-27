@@ -27,7 +27,7 @@ async function exec(message, ctx) {
 
     while (map.length > 0) {
         let element = [];
-        while (element.join(", ").length < 1900) {
+        while (element.join(", ").length < 1900 && map.length > 0) {
             element.push(map.splice(0, 1)[0]);
         }
         
