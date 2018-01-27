@@ -24,12 +24,12 @@ async function exec(message, ctx) {
         .map((user) => `${user.username}#${user.discriminator}`);
 
     while (map.length > 0) {
-        let element = "";
-        while (element.length < 1900) {
-            element += map.splice(0, 1)[0];
+        let element = [];
+        while (element.join(", ").length < 1900) {
+            element.push(map.splice(0, 1)[0]);
         }
         
-        await ctx.code("js", element);
+        await ctx.code("js", element.join(", "));
     }
 }
 
