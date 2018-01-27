@@ -22,14 +22,20 @@ async function exec(message, ctx) {
     let map = ctx.client.bot.users
         .filter((user) => user.discriminator == discrim)
         .map((user) => `${user.username}#${user.discriminator}`);
+    
+    let msg = [];
 
     while (map.length > 0) {
         let element = [];
         while (element.join(", ").length < 1900) {
-            element.push(map.splice(0, 1)[0]);
+            msg.push(map.splice(0, 1)[0]);
         }
         
-        await ctx.code("js", element.join(", "));
+        msg.push(element.join(", "));
+    }
+    
+    for (let element of msg) {
+        await ctx.code("js", element);
     }
 }
 
