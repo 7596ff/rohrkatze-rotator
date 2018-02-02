@@ -1,0 +1,90 @@
+{
+    "pinboard": {
+        "usage": "%spinboard <in our out>",
+        "description": "Sets the pinboard channels for the server. When both are set, each time a message is pinned in the `in` channel, it is posted to the `out` channel as a backup.",
+        "args": {
+            "in": "Sets the pinboard in channel.",
+            "out": "Sets the pinboard out channel."
+        }
+    },
+    "roleme": {
+        "usage": "%sroleme <subcommand>",
+        "description": "Commands for adding or removing roles to yourself.",
+        "args": {
+            "add": "(can also be used with just katze roleme) adds a role to yourself from the list of roleme roles.",
+            "create": "(requires permissions) creates a blank role with the specified name and adds it to the list of roleme roles.",
+            "disable": "removes a role from the list of roleme roles.",
+            "enable": "adds a role to the list of roleme roles.",
+            "list": "shows all the roleme roles in this server.",
+            "remove": "removes a roleme role from yourself."
+        }
+    },
+    "star": {
+        "usage": "%sstar <subcommand>",
+        "description": "Set of commands for interacting with the starboard.",
+        "args": {
+            "show": "<id> the id of a star to show in the current channel.",
+            "stats": "show some statistics of the starboard in this server.",
+            "who": "<id> show who starred a post."
+        }
+    },
+    "starboard": {
+        "usage": "%sstarboard <subcommand>",
+        "description": "Set of commands for administering the starboard.",
+        "args": {
+            "channel": "sets the channel in which to post new stars. it is recommended to remove send message permissions from everyone but this bot. `none` to disable.",
+            "emoji": "sets the emoji to treat as a star. send a :star: to reset."
+        }
+    },
+    "avatar": {
+        "usage": "%savatar [user]",
+        "description": "Shows a full size avatar for yourself or a target user."
+    },
+    "delete": {
+        "usage": "%sdelete <id>",
+        "description": "Deletes an image from the rotation, and sends it back to you. To see images, type `katze list`."
+    },
+    "emojis": {
+        "usage": "%semojis [all]",
+        "description": "Shows the top 10 emojis used in the server in the last week, add `all` to see all of them."
+    },
+    "farm": {
+        "usage": "%sfarm [user]",
+        "description": "Shows any user with a discriminator the same as yourself or the target user. Send a discriminator (1234) to see those."
+    },
+    "link": {
+        "usage": "%slink <role id>",
+        "description": "Link a role ID to an invite code. This bot must have the Create Instant Invite permission. use `katze roles` to see the role IDs for this server."
+    },
+    "list": {
+        "description": "Shows all the images in this server's icon rotation."
+    },
+    "migratepins": {
+        "description": "Using the pinboard in and pinboard out channels, send all pins from the in channel to the out channel as messages."
+    },
+    "owo": {
+        "description": "Whats this owo"
+    },
+    "pin": {
+        "usage": "%spin <id>",
+        "description": "Force a message into the pinboard out channel from any channel. You must use this command in the same channel as the message."
+    },
+    "pls": {
+        "usage": "%spls <image link or target user or upload an image>",
+        "description": "Add an image to this server's icon rotation, and set it as the current icon."
+    },
+    "roles": {
+        "description": "Show the list of roles in this server."
+    },
+    "rotate": {
+        "description": "Change the server icon with one of the ones in the rotation. To see the list of images, type `katze list`."
+    },
+    "show": {
+        "usage": "%sshow <id>",
+        "description": "Shows a specific image from the rotation. To see the list of images, type `katze list`."
+    },
+    "timeout": {
+        "usage": "%stimeout <hours>",
+        "description": "Change how often the icon rotates. Can be any number between 1 and 24."
+    }
+}
