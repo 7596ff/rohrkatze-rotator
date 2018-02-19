@@ -30,7 +30,7 @@ async function exec(message, ctx) {
         await ctx.client.util.rotate(ctx.client, message.channel.guild, data.folder[images.indexOf(choice)]);
         return ctx.success("");
     } else {
-        ctx.send("ahhh")
+        ctx.send(ctx.strings.get("show_no_image"))
     }
 }
 

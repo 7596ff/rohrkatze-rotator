@@ -90,5 +90,9 @@
     "count": {
         "usage": "%scount",
         "description": "Shows how many images are in this server's current rotation."
+    },
+    "pick": {
+        "usage": "%spick <id>",
+        "description": "Pick a specific image from the rotation as the server icon."
     }
 }
