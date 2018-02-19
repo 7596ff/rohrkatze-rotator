@@ -9,12 +9,13 @@ module.exports = {
     rand: function(array) {
         return array[Math.floor(Math.random() * array.length)];
     },
-    rotate: async function(client, guild) {
+    rotate: async function(client, guild, override) {
         let data = await this.getFolder(client, guild);
 
         let row = await client.getGuild(guild.id);
         data.folder = data.folder.filter((file) => !file.includes(row.current));
         let chosen = this.rand(data.folder);
+        if (override) chosen = override;
         let image = await client.fs.readFileAsync(`${data.path}/${chosen}`);
 
         if (row.meme && Math.floor(Math.random() * 10) === 0) {
