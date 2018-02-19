@@ -55,7 +55,7 @@ async function exec(message, ctx) {
     });
 
     if (res.rows.length < 1) {
-        return ctx.failure(ctx.strings.get("star_stats_not_enough_stars"))
+        return ctx.failure(ctx.strings.get("star_stats_not_enough_stars"));
     }
 
     let whores = await ctx.client.pg.query("SELECT * FROM who;");

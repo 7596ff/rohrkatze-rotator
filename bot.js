@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const config = require("./config.json");
 const Casca = require("casca");
 const Redis = require("redis");
@@ -15,7 +17,7 @@ client.jobs = { rotations: {} };
 client.watchedCodes = [];
 client.invites = new Map();
 
-rsub = Redis.createClient();
+const rsub = Redis.createClient();
 rsub.subscribe("__keyevent@0__:expired");
 
 client.on("ready", () => {
@@ -218,7 +220,7 @@ client.bot.on("messageDelete", async (message) => {
 async function onReactionChange(message, emoji, userID, add) {
     emoji = emoji.id ? `${emoji.name}:${emoji.id}` : emoji.name;
 
-    guildID = client.bot.channelGuildMap[message.channel.id];
+    let guildID = client.bot.channelGuildMap[message.channel.id];
     if (!guildID) return;
 
     if (!message.member || !message.content) {
@@ -376,7 +378,7 @@ const addmethods = {
         await client.bot.addGuildMemberRole(guild.id, member.id, res.rows[0].role);
         console.log(`${new Date().toJSON()} added role to ${member.username} on ${guild.name} (code ${unique.code})`);
     }
-}
+};
 
 client.bot.on("guildMemberAdd", async (guild, member) => {
     for (let method in addmethods) {

@@ -15,7 +15,7 @@ async function embed(ctx, data) {
         let colorRole = data.message.member.roles
             .map((role) => data.message.channel.guild.roles.get(role))
             .sort((a, b) => b.position - a.position)
-            .find((role) => role.color != 0)
+            .find((role) => role.color != 0);
         embed.color = colorRole ? colorRole.color : 0;
     }
 
@@ -44,7 +44,7 @@ async function exec(message, ctx) {
     });
 
     if (res.rows.length < 1) {
-        return ctx.failure(ctx.strings.get("star_show_not_found"))
+        return ctx.failure(ctx.strings.get("star_show_not_found"));
     }
 
     let row = res.rows[0];

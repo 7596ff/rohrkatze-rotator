@@ -11,7 +11,7 @@ async function exec(message, ctx) {
             }
         }
     } else {
-         member = message.author.id;
+        member = message.author.id;
     }
 
     if (!discrim) discrim = ctx.client.bot.users.get(member).discriminator;

@@ -17,7 +17,7 @@ async function exec(message, ctx) {
     } catch (error) {
         if (error == "one_image") {
             return ctx.failure(ctx.strings.get("rotate_one_image"));
-        } else if (result === "no_images") {
+        } else if (error === "no_images") {
             return ctx.failure(ctx.strings.get("rotate_no_images"));
         }        
     }

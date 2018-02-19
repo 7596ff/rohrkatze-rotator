@@ -32,7 +32,7 @@ module.exports = {
         });
 
         delete client.guildCache[guild.id];
-        console.log(`${new Date().toJSON()} [${guild.id}/${guild.name}] :: ROTATE`);
+        console.log(`${new Date().toJSON()} [${guild.id}/${guild.name}] :: ROTATE`); // eslint-disable-line no-console
     },
     meme: async function(image) {
         let base = await Jimp.read(image);
@@ -119,22 +119,22 @@ module.exports = {
                 try {
                     await member.removeRole(row.activity);
                 } catch (error) {
-                    console.error(`${guild.id}/${guild.name} - ${member.id}/${member.username}`);
-                    console.error(error.response);
+                    console.error(`${guild.id}/${guild.name} - ${member.id}/${member.username}`); // eslint-disable-line no-console
+                    console.error(error.response); // eslint-disable-line no-console
                 }
 
                 amount += 1;
             }
         }
 
-        if (amount > 0) console.log(`${new Date().toJSON()} removed ${amount} roles from ${rows.length} different guilds`);
+        if (amount > 0) console.log(`${new Date().toJSON()} removed ${amount} roles from ${rows.length} different guilds`); // eslint-disable-line no-console
     },
     decayEmojis: async function(client) {
         let week = this.lastWeek().map((key) => `emojis:${key}`);
         let keys = await client.redis.keysAsync("emojis:*");
         let old = keys.filter((key) => !week.includes(key));
         await client.redis.delAsync(...old);
-        console.log(`${new Date().toJSON()} deleted ${old.length} emoji sets`);
+        console.log(`${new Date().toJSON()} deleted ${old.length} emoji sets`); // eslint-disable-line no-console
     },
     lastWeek: function() {
         return "0123456"

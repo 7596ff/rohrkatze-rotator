@@ -17,7 +17,7 @@ async function exec(message, ctx) {
     
     } catch (error) {
         if (error.code === "23505") {
-            return ctx.failure(ctx.strings.get("roleme_enable_already"))
+            return ctx.failure(ctx.strings.get("roleme_enable_already"));
         } else {
             throw error;
         }

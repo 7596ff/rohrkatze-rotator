@@ -16,7 +16,7 @@ async function exec(message, ctx) {
     }
 
     if (!url) {
-        return ctx.failure(ctx.strings.get("pls_no_image"))
+        return ctx.failure(ctx.strings.get("pls_no_image"));
     }
 
     let img = await snekfetch.get(url);
