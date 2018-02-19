@@ -10,12 +10,7 @@ module.exports = {
         return array[Math.floor(Math.random() * array.length)];
     },
     rotate: async function(client, guild) {
-        let data;
-        try {
-            data = await this.getFolder(client, guild);
-        } catch (error) {
-            return error;
-        }
+        let data = await this.getFolder(client, guild);
 
         let row = await client.getGuild(guild.id);
         data.folder = data.folder.filter((file) => !file.includes(row.current));

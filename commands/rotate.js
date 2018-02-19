@@ -12,15 +12,17 @@ async function exec(message, ctx) {
         return ctx.failure(ctx.strings.get("rotate_cant"));
     }
 
-    let result = await ctx.client.util.rotate(ctx.client, message.channel.guild);
-
-    if (result === "one_image") {
-        return ctx.failure(ctx.strings.get("rotate_one_image"));
-    } else if (result === "no_images") {
-        return ctx.failure(ctx.strings.get("rotate_no_images"));
-    } else {
-        return ctx.send("♻");
+    try {
+        await ctx.client.util.rotate(ctx.client, message.channel.guild);
+    } catch (error) {
+        if (error == "one_image") {
+            return ctx.failure(ctx.strings.get("rotate_one_image"));
+        } else if (result === "no_images") {
+            return ctx.failure(ctx.strings.get("rotate_no_images"));
+        }        
     }
+    
+    return ctx.send("♻");
 }
 
 module.exports = {
