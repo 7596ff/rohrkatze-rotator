@@ -86,5 +86,9 @@
     "timeout": {
         "usage": "%stimeout <hours>",
         "description": "Change how often the icon rotates. Can be any number between 1 and 24."
+    },
+    "count": {
+        "usage": "%scount",
+        "description": "Shows how many images are in this server's current rotation."
     }
 }
