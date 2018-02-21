@@ -31,7 +31,9 @@ client.once("ready", () => {
                 `0 */${row.timeout || 12} * * *`,
                 () => {
                     client.getGuild(guild.id).then((row) => {
-                        if (!row.dont) client.util.rotate(client, guild).catch((error) => console.error(error));
+                        if (!row.dont) client.util.rotate(client, guild).catch((error) => {
+                            if (!["no_images", "one_image"].includes(error)) console.error(error);
+                        });
                     });
                 },
                 null,
