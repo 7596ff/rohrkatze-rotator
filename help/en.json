@@ -94,5 +94,9 @@
     "pick": {
         "usage": "%spick <id>",
         "description": "Pick a specific image from the rotation as the server icon."
+    },
+    "what": {
+        "usage": "%swat",
+        "description": "Shows the fullsize version of the current icon."
     }
 }

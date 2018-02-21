@@ -19,7 +19,7 @@ async function exec(message, ctx) {
             return ctx.failure(ctx.strings.get("rotate_one_image"));
         } else if (error === "no_images") {
             return ctx.failure(ctx.strings.get("rotate_no_images"));
-        }        
+        }
     }
     
     return ctx.send("♻");
