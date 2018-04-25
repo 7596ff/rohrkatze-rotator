@@ -76,8 +76,7 @@ client.on("bot", (message) => {
 });
 
 client.on("error", (status, error) => {
-    console.error(error);
-    console.error(`${new Date().toJSON()} ${status.text}`);
+    console.error(error.code);
 });
 
 client.on("command", (output, result) => {
