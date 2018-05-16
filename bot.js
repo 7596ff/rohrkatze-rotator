@@ -4,6 +4,7 @@ const config = require("./config.json");
 const Casca = require("casca");
 const Redis = require("redis");
 const CronJob = require("cron").CronJob;
+const Twitter = require("twitter");
 require("bluebird").promisifyAll(Redis);
 
 // monkaS
@@ -16,6 +17,7 @@ client.fs = require("bluebird").promisifyAll(require("fs"));
 client.jobs = { rotations: {} };
 client.watchedCodes = [];
 client.invites = new Map();
+client.twitter = new Twitter(config.twitter);
 
 const rsub = Redis.createClient();
 rsub.subscribe("__keyevent@0__:expired");
@@ -93,7 +95,8 @@ client.on("command", (output, result) => {
     }
 });
 
-let customEmoji = /<a?:[a-zA-Z1-9-_]{2,}:\d{17,20}>/g;
+const customEmoji = /<a?:[a-zA-Z1-9-_]{2,}:\d{17,20}>/g;
+const tweetRegex = /(?:^|\W)https?:\/\/(?:mobile\.)?twitter\.com\/\S+\/(\d+)(?:$|\W)/gm;
 
 async function processPin(message) {
     let row;
@@ -154,6 +157,41 @@ const methods = {
                     text: "UPDATE guilds SET activity = null WHERE id = $1;",
                     values: [message.channel.guild.id]
                 });
+            }
+        }
+    },
+    checkForTweet: async function(message) {
+        if (message.author.bot) return;
+
+        let row = await client.getGuild(message.channel.guild.id);
+        if (!row.twig) return;
+
+        let matchedTweets = message.content.match(tweetRegex);
+        if (!matchedTweets) return;
+
+        for (let tweet of matchedTweets) {
+            // be lazy and assume the url isn't malformed
+            let id = tweet
+                .split("/")
+                .reverse()[0];
+
+            let reply;
+            try {
+                reply = await client.twitter.get("statuses/show", { id });
+            } catch (err) {
+                message.channel.createMessage("Malformed Tweet url, please report this to the author");
+                throw err;
+            }
+
+            if (reply.extended_entities && reply.extended_entities.media) {
+                for (let image of reply.extended_entities.media.slice(1)) {
+                    await message.channel.createMessage(image.media_url_https);
+                }
+            }
+
+            if (reply.is_quote_status) {
+                let quoted = `https://twitter.com/${reply.quoted_status.user.screen_name}/status/${reply.quoted_status.id_str}`;
+                await message.channel.createMessage(quoted);
             }
         }
     }

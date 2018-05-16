@@ -18,5 +18,26 @@
         "rolestate": "BOOLEAN",
         "lasttime": "BIGINT",
         "current": "BIGINT"
+    },
+    "2018-05-16T14:45:49.014Z": {
+        "id": "BIGINT NOT NULL",
+        "name": "TEXT",
+        "channelCD": "INT DEFAULT 0",
+        "memberCD": "INT DEFAULT 0",
+        "locale": "TEXT DEFAULT 'en'",
+        "activity": "BIGINT",
+        "timeout": "INT",
+        "meme": "BOOLEAN",
+        "dont": "BOOLEAN",
+        "emoji": "TEXT DEFAULT '⭐'",
+        "slowrole": "BIGINT",
+        "starboard": "BIGINT",
+        "pinboardin": "BIGINT",
+        "pinboardout": "BIGINT",
+        "cleanpins": "BOOLEAN",
+        "rolestate": "BOOLEAN",
+        "lasttime": "BIGINT",
+        "current": "BIGINT",
+        "twig": "BOOLEAN"
     }
 }
