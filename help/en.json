@@ -98,5 +98,9 @@
     "what": {
         "usage": "%swat",
         "description": "Shows the fullsize version of the current icon."
+    },
+    "twig": {
+        "usage": "twig",
+        "description": "Enables display of extra images from embedded tweets."
     }
 }

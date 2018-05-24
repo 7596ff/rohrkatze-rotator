@@ -11,7 +11,7 @@ async function exec(message, ctx) {
     }
 
     let name = data.folder.find((file) => file.replace(/\D/g, "") == ctx.row.current);
-    let image = await ctx.client.fs.readFileAsync(path = `${data.path}/${name}`);
+    let image = await ctx.client.fs.readFileAsync(`${data.path}/${name}`);
 
     return ctx.send(name, { name: "image.png", file: image });
 }
