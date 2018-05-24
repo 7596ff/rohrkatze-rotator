@@ -124,11 +124,16 @@ async function processPin(message) {
     }
 }
 
-const methods = {
-    scoreEmojis: async function(message) {
+const messageCreateMethods = {
+    scoreEmojis: async function(message, emojis, add) {
         if (message.author.bot) return;
     
-        let emojis = message.content.match(customEmoji);
+        if (emojis) {
+            emojis = [`a:${emojis}>`];
+        } else {
+            emojis = message.content.match(customEmoji);
+        }
+
         if (!emojis) return;
     
         let ymd = `emojis:${client.util.today()}`;
@@ -136,7 +141,12 @@ const methods = {
         for (let emoji of emojis) {
             let id = emoji.split(":")[2].slice(0, -1);
             if (!message.channel.guild.emojis.find((emoji) => emoji.id == id)) return;
-            await client.redis.zincrbyAsync(ymd, 1, id);
+
+            if (add === false) {
+                await client.redis.zincrbyAsync(ymd, -1, id); // remove one from the emoji set
+            } else {
+                await client.redis.zincrbyAsync(ymd, 1, id);
+            }
         }
     },
     addActivity: async function(message) {
@@ -201,9 +211,9 @@ client.bot.on("messageCreate", async (message) => {
     if (message.type === 6) return processPin(message);
     if (!message.channel.guild) return;
     
-    for (let method in methods) {
+    for (let method in messageCreateMethods) {
         try {
-            await methods[method](message);
+            await messageCreateMethods[method](message);
         } catch (error) {
             console.error(error);
             console.error(`error in ${method}\nchannel id:${message.channel.id} message id:${message.id}`);
@@ -257,7 +267,15 @@ client.bot.on("messageDelete", async (message) => {
 
 // bulk of starboard logic
 async function onReactionChange(message, emoji, userID, add) {
-    emoji = emoji.id ? `${emoji.name}:${emoji.id}` : emoji.name;
+    if (emoji.id) {
+        emoji = `${emoji.name}:${emoji.id}`;
+
+        if (!message.author) message = await client.bot.getMessage(message.channel.id, message.id);
+        message.author.bot = client.bot.users.get(userID).bot;
+        messageCreateMethods.scoreEmojis(message, emoji, add);
+    } else {
+        emoji = emoji.name;
+    }
 
     let guildID = client.bot.channelGuildMap[message.channel.id];
     if (!guildID) return;
@@ -378,7 +396,7 @@ async function onReactionChange(message, emoji, userID, add) {
 client.bot.on("messageReactionAdd", (message, emoji, userID) => onReactionChange(message, emoji, userID, true));
 client.bot.on("messageReactionRemove", (message, emoji, userID) => onReactionChange(message, emoji, userID, false));
 
-const addmethods = {
+const guildMemberAddMethods = {
     rolestate: async function(guild, member) {
         if (!guild.members.get(client.bot.user.id).permission.has("manageRoles")) return;
 
@@ -420,9 +438,9 @@ const addmethods = {
 };
 
 client.bot.on("guildMemberAdd", async (guild, member) => {
-    for (let method in addmethods) {
+    for (let method in guildMemberAddMethods) {
         try {
-            await addmethods[method](guild, member);
+            await guildMemberAddMethods[method](guild, member);
         } catch (error) {
             console.error(error);
             console.error(`error on method ${method}\n${guild.id}/${guild.name} - ${member.id}/${member.name}`);
