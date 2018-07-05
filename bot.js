@@ -187,7 +187,7 @@ const messageCreateMethods = {
 
             let reply;
             try {
-                reply = await client.twitter.get("statuses/show", { id, tweet_mode: "extended" });
+                reply = await client.twitter.get("statuses/show", { id });
             } catch (err) {
                 message.channel.createMessage("Malformed Tweet url, please report this to the author");
                 throw err;
@@ -204,7 +204,8 @@ const messageCreateMethods = {
                 await message.channel.createMessage(quoted);
             }
 
-            if (message.embeds[0].description.endsWith("...")) {
+            if (reply.truncated) {
+                reply = await client.twitter.get("statuses/show", { id, tweet_mode: "extended" });
                 await message.channel.createMessage({
                     embed: {
                         title: "Full text",
