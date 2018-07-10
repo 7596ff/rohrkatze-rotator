@@ -204,6 +204,7 @@ const messageCreateMethods = {
                 await message.channel.createMessage(quoted);
             }
 
+            /*
             if (reply.truncated) {
                 reply = await client.twitter.get("statuses/show", { id, tweet_mode: "extended" });
                 await message.channel.createMessage({
@@ -213,6 +214,7 @@ const messageCreateMethods = {
                     }
                 });
             }
+            */
         }
     }
 };
