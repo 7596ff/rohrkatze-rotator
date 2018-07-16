@@ -48,10 +48,6 @@
         "usage": "%semojis [all]",
         "description": "Shows the top 10 emojis used in the server in the last week, add `all` to see all of them."
     },
-    "farm": {
-        "usage": "%sfarm [user]",
-        "description": "Shows any user with a discriminator the same as yourself or the target user. Send a discriminator (1234) to see those."
-    },
     "link": {
         "usage": "%slink <role id>",
         "description": "Link a role ID to an invite code. This bot must have the Create Instant Invite permission. use `katze roles` to see the role IDs for this server."
