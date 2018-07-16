@@ -26,6 +26,12 @@ client.on("ready", () => {
     console.log(new Date().toJSON() + " Ready.");
 });
 
+function sleep(ms) {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, ms);
+    });
+}
+
 client.once("ready", () => {
     client.bot.guilds.forEach((guild) => {
         client.getGuild(guild.id).then((row) => {
@@ -204,8 +210,10 @@ const messageCreateMethods = {
                 await message.channel.createMessage(quoted);
             }
 
-            /*
-            if (reply.truncated) {
+            await sleep(2000); // :ancap:
+
+            message = await client.bot.getMessage(message.channel.id, message.id);
+            if (message.embeds[0].description.endsWith("...")) {
                 reply = await client.twitter.get("statuses/show", { id, tweet_mode: "extended" });
                 await message.channel.createMessage({
                     embed: {
@@ -214,7 +222,6 @@ const messageCreateMethods = {
                     }
                 });
             }
-            */
         }
     }
 };
