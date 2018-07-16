@@ -396,8 +396,14 @@ async function onReactionChange(message, emoji, userID, add) {
     };
 
     try {
-        if (row.stars === 0) {
-            await client.bot.deleteMessage(guild.starboard, row.post);
+        if (row.stars <= (Number(guild.starmin) - 1 || 0)) {
+            if (row.post) {
+                await client.bot.deleteMessage(guild.starboard, row.post);
+                await client.pg.query({
+                    text: "UPDATE starboard SET post = null WHERE message = $1;",
+                    values: [message.id]
+                });
+            }
         } else if (row.post) {
             await client.bot.editMessage(guild.starboard, row.post, msg);
         } else {

@@ -100,7 +100,31 @@
         "description": "Shows the fullsize version of the current icon."
     },
     "twig": {
-        "usage": "twig",
+        "usage": "%stwig",
         "description": "Enables display of extra images from embedded tweets."
+    },
+    "activity": {
+        "usage": "%sactivity <role>",
+        "description": "Sets the activity role for the server.\n\nThis role must be below the rohrkatze-rotator role in order to function properly. This role is assigned to a member whenever they type, and is removed after a little while. It persists longer the more messages that member sends."
+    },
+    "meme": {
+        "usage": "%smeme",
+        "description": "Toggles the current state of meme on the server. While this is on, the rotation has a 1/10 chance of displaying a fake notification badge."
+    },
+    "dont": {
+        "usage": "%sdont",
+        "description": "Toggles rotation of the server icon. While this is true, the icon will not rotate."
+    },
+    "cleanpins": {
+        "usage": "%scleanpins",
+        "description": "Toggles whether or not to clean the pins of the current pinboard in channel. While this is on, when a new message is pinned in the pinboard in channel, the oldest pin is removed."
+    },
+    "rolestate": {
+        "usage": "%srolestate",
+        "description": "Toggles rolestate for the server. While this is on, any time a user leaves the server, their roles are cached inside Katze's Redis server. If they join again and it is still on, their roles will be automatically reapplied."
+    },
+    "starmin": {
+        "usage": "%starmin <number>",
+        "description": "Sets the minimum amount of stars that a post needs to have for it to show up in the starboard."
     }
 }
