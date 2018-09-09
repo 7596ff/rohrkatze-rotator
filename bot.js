@@ -193,7 +193,7 @@ const messageCreateMethods = {
 
             let reply;
             try {
-                reply = await client.twitter.get("statuses/show", { id });
+                reply = await client.twitter.get("statuses/show", { id, tweet_mode: "extended" });
             } catch (err) {
                 message.channel.createMessage("Malformed Tweet url, please report this to the author");
                 throw err;
@@ -210,17 +210,11 @@ const messageCreateMethods = {
                 await message.channel.createMessage(quoted);
             }
 
-            await sleep(2000); // :ancap:
+            await sleep(100); // :ancap:
 
             message = await client.bot.getMessage(message.channel.id, message.id);
-            if (message.embeds[0].description.endsWith("...")) {
-                reply = await client.twitter.get("statuses/show", { id, tweet_mode: "extended" });
-                await message.channel.createMessage({
-                    embed: {
-                        title: "Full text",
-                        description: reply.full_text
-                    }
-                });
+            if (message.embeds[0].description.endsWith("...") && !reply.full_text.endsWith("...")) {
+                await message.channel.createMessage(`**Full Tweet Text**:\n\n${reply.full_text}`);
             }
         }
     }
