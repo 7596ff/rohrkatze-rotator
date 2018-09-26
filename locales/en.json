@@ -41,5 +41,6 @@
     "colorme_add_no_roles": "i can't find that role in the list of roleme roles for this server! try `katze roleme list`.",
     "colorme_list": "list of colors u can give urself on this server:",
     "colorme_create": "created color role %1$s. use `katze colorme %1$s` to give this role to yourself.",
-    "colorme_invalid_hex": "string %s isnt a valid hex color value! pls provide 1"
+    "colorme_invalid_hex": "string %s isnt a valid hex color value! pls provide 1",
+    "colorme_sixteen": "yay!! here's what they look like: https://o.lol-sa.me/76f0b3.png"
 }
