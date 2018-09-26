@@ -37,5 +37,9 @@
     "star_show_not_found": "can't find this star :(",
     "count_how_many": "there are **%s** images here! wow !",
     "bot_bad_input_abbr": "bad input. try abbreviateing the unit (example: use `ft` for `feet`",
-    "convert_response": "%s %s is %s in %s"
+    "convert_response": "%s %s is %s in %s",
+    "colorme_add_no_roles": "i can't find that role in the list of roleme roles for this server! try `katze roleme list`.",
+    "colorme_list": "list of colors u can give urself on this server:",
+    "colorme_create": "created color role %1$s. use `katze colorme %1$s` to give this role to yourself.",
+    "colorme_invalid_hex": "string %s isnt a valid hex color value! pls provide 1"
 }

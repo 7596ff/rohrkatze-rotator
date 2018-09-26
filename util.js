@@ -71,15 +71,17 @@ module.exports = {
         if (!match) return false;
         return match[0] > 0.8 && match[1];
     },
-    getRoles: async function(pg, guild) {
+    getRoles: async function(pg, guild, color) {
         let res = await pg.query({
             text: "SELECT * FROM roleme WHERE guild = $1;",
             values: [guild.id]
         });
 
-        let roles = res.rows.map((row) => {
-            return { id: row.id, role: guild.roles.get(row.id) };
-        });
+        let roles = res.rows
+            .filter((row) => !!color === !!row.color)
+            .map((row) => {
+                return { id: row.id, role: guild.roles.get(row.id) };
+            });
 
         let expired = roles.filter((role) => !role.role);
         if (expired.length) await Promise.all(expired.map((role) => pg.query({

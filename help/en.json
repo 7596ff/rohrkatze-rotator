@@ -122,5 +122,15 @@
     "starmin": {
         "usage": "%starmin <number>",
         "description": "Sets the minimum amount of stars that a post needs to have for it to show up in the starboard."
+    },
+    "colorme": {
+        "usage": "%scolorme <subcommand>",
+        "description": "Commands for adding or removing colors to yourself.",
+        "args": {
+            "add": "(can also be used with just katze colorme) adds a role to yourself from the list of color roles.",
+            "create": "(requires permissions) creates a blank color role with the specified name and hex color, and adds it to the list of color roles.",
+            "list": "shows all the color roles in this server.",
+            "remove": "removes a color role from yourself."
+        }
     }
 }

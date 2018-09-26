@@ -1,0 +1,1 @@
+ALTER TABLE roleme ADD COLUMN color text;
