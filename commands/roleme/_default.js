@@ -6,7 +6,7 @@ async function exec(message, ctx) {
         await message.channel.guild.addMemberRole(
             message.member.id,
             roles.find((role) => role.name === selected).id,
-            "Automated roleme grant"
+            "Automated roleme role grant"
         );
 
         return message.addReaction("greenTick:357246808767987712");
