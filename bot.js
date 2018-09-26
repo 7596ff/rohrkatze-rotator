@@ -84,7 +84,8 @@ client.on("bot", (message) => {
 });
 
 client.on("error", (status, error) => {
-    console.error(error.code);
+    console.log(status.text);
+    console.log(error);
 });
 
 client.on("command", (output, result) => {
