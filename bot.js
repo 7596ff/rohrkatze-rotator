@@ -390,7 +390,7 @@ async function onReactionChange(message, emoji, userID, add) {
     };
 
     try {
-        if (row.stars <= (Number(guild.starmin) - 1 || 0)) {
+        if (row.stars < (guild.starmin ? Number(guild.starmin) : 1)) {
             if (row.post) {
                 await client.bot.deleteMessage(guild.starboard, row.post);
                 await client.pg.query({
