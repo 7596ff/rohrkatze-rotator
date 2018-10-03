@@ -5,6 +5,7 @@ const Casca = require("casca");
 const Redis = require("redis");
 const CronJob = require("cron").CronJob;
 const Twitter = require("twitter");
+const prettyms = require("pretty-ms");
 require("bluebird").promisifyAll(Redis);
 
 // monkaS
@@ -104,6 +105,9 @@ client.on("command", (output, result) => {
 
 const customEmoji = /<a?:[a-zA-Z1-9-_]{2,}:\d{17,20}>/g;
 const tweetRegex = /(?:^|\W)https?:\/\/(?:mobile\.)?twitter\.com\/\S+\/(\d+)(?:$|\W)/gm;
+const voreRegex = /\b[V|v][O|Ò|Ó|Ô|Õ|Ö|o|ò|ó|ô|õ|ö|ᴑ|о][R|r][E|È|É|Ê|Ë|e|è|é|ê|ë][S|s]?\b/g;
+
+const THIRTY_MINUTES = 1800000;
 
 async function processPin(message) {
     let row;
@@ -217,6 +221,24 @@ const messageCreateMethods = {
             if (message.embeds[0].description.endsWith("...") && !reply.full_text.endsWith("...")) {
                 await message.channel.createMessage(`**Full Tweet Text**:\n\n${reply.full_text}`);
             }
+        }
+    },
+    checkForVore: async function(message) {
+        if (message.author.bot) return;
+        if (!message.content.match(voreRegex)) return;
+
+        let row = await client.getGuild(message.channel.guild.id);
+
+        let key = `katze:vore:${message.channel.guild.id}`;
+        let reply = await client.redis.getAsync(key);
+
+        if (!reply) return;
+        reply = Number(reply);
+
+        await client.redis.setAsync(key, message.timestamp.toString());
+
+        if (reply >= THIRTY_MINUTES + message.timestamp && row.vtrack) {
+            await message.channel.createMessage(`user:<@${message.author.id}> has broken the silence and said the cursed word.\nThis server has gone ${prettyms(reply - message.timestamp)} since the last infraction.`);
         }
     }
 };
