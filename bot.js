@@ -232,10 +232,10 @@ const messageCreateMethods = {
         let key = `katze:vore:${message.channel.guild.id}`;
         let reply = await client.redis.getAsync(key);
 
+        await client.redis.setAsync(key, message.timestamp.toString());
+
         if (!reply) return;
         reply = Number(reply);
-
-        await client.redis.setAsync(key, message.timestamp.toString());
 
         if (reply + THIRTY_MINUTES >= message.timestamp && row.vtrack) {
             await message.channel.createMessage(`user:<@${message.author.id}> has broken the silence and said the cursed word.\nThis server has gone ${prettyms(reply - message.timestamp)} since the last infraction.`);
