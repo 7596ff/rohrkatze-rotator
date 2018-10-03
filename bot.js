@@ -237,7 +237,7 @@ const messageCreateMethods = {
         if (!reply) return;
         reply = Number(reply);
 
-        if (reply - THIRTY_MINUTES >= message.timestamp && row.vtrack) {
+        if (reply + THIRTY_MINUTES <= message.timestamp && row.vtrack) {
             await message.channel.createMessage(`user:<@${message.author.id}> has broken the silence and said the cursed word.\nThis server has gone ${prettyms(message.timestamp - reply, { verbose: true })} since the last infraction.`);
         }
     }
