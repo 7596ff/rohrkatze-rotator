@@ -237,7 +237,7 @@ const messageCreateMethods = {
 
         await client.redis.setAsync(key, message.timestamp.toString());
 
-        if (reply >= THIRTY_MINUTES + message.timestamp && row.vtrack) {
+        if (reply + THIRTY_MINUTES >= message.timestamp && row.vtrack) {
             await message.channel.createMessage(`user:<@${message.author.id}> has broken the silence and said the cursed word.\nThis server has gone ${prettyms(reply - message.timestamp)} since the last infraction.`);
         }
     }
