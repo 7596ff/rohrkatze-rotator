@@ -18,7 +18,7 @@
   "homepage": "https://github.com/bippum/rohrkatze-rotator#readme",
   "dependencies": {
     "bluebird": "^3.5.1",
-    "casca": "0.0.11",
+    "casca": "0.0.12",
     "convert-units": "^2.3.4",
     "jimp": "^0.2.28",
     "money": "^0.2.0",
