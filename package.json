@@ -20,6 +20,7 @@
     "bluebird": "^3.5.1",
     "casca": "0.0.14",
     "convert-units": "^2.3.4",
+    "ioredis": "^4.2.0",
     "jimp": "^0.2.28",
     "money": "^0.2.0",
     "pretty-ms": "^3.1.0",

@@ -1,7 +1,7 @@
 async function exec(message, ctx) {
     let dates = ctx.client.util.lastWeek();
 
-    let promises = dates.map((date) => ctx.client.redis.zrevrangebyscoreAsync(`emojis:${date}`, "Infinity", "-Infinity", "WITHSCORES"));
+    let promises = dates.map((date) => ctx.client.redis.zrevrangebyscore(`emojis:${date}`, "Infinity", "-Infinity", "WITHSCORES"));
     let results = await Promise.all(promises);
 
     let guildEmoji = {};
