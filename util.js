@@ -2,9 +2,9 @@ const FuzzySet = require("fuzzyset.js");
 const Jimp = require("jimp");
 
 module.exports = {
-    today: function(now)  {
+    today: function(now, hr)  {
         if (!now) now = new Date();
-        return `${now.getFullYear()}${("00" + now.getMonth()).slice(-2)}${("00" + now.getDate()).slice(-2)}`;
+        return `${now.getFullYear()}${("00" + now.getMonth()).slice(-2)}${("00" + now.getDate()).slice(-2)}${hr ? now.getHours() : ""}`;
     },
     rand: function(array) {
         return array[Math.floor(Math.random() * array.length)];
@@ -16,7 +16,7 @@ module.exports = {
         data.folder = data.folder.filter((file) => !file.includes(row.current));
         let chosen = this.rand(data.folder);
         if (override) chosen = override;
-        let image = await client.fs.readFileAsync(`${data.path}/${chosen}`);
+        let image = await client.fs.readFile(`${data.path}/${chosen}`);
 
         if (row.meme && Math.floor(Math.random() * 10) === 0) {
             image = await this.meme(image);
@@ -47,7 +47,7 @@ module.exports = {
     getFolder: async function(client, guild) {
         let folder, path;
         try {
-            folder = await client.fs.readdirAsync(path = `./guilds/${guild.id}`);
+            folder = await client.fs.readdir(path = `./guilds/${guild.id}`);
 
             if (folder.length === 0) {
                 throw "no_images";
@@ -111,13 +111,13 @@ module.exports = {
             for (let member of members) {
                 let key = `katze:activity:${row.id}:${member.id}`;
 
-                let count = await client.redis.getAsync(key);
+                let count = await client.redis.get(key);
                 let newCount = Math.floor(count * 0.7);
-                await client.redis.setAsync(key, newCount);
+                await client.redis.set(key, newCount);
 
                 if (newCount > 10) continue;
 
-                await client.redis.setAsync(key, 0);
+                await client.redis.set(key, 0);
                 try {
                     await member.removeRole(row.activity);
                 } catch (error) {
@@ -133,9 +133,9 @@ module.exports = {
     },
     decayEmojis: async function(client) {
         let week = this.lastWeek().map((key) => `emojis:${key}`);
-        let keys = await client.redis.keysAsync("emojis:*");
+        let keys = await client.redis.keys("emojis:*");
         let old = keys.filter((key) => !week.includes(key));
-        await client.redis.delAsync(...old);
+        await client.redis.del(...old);
         console.log(`${new Date().toJSON()} deleted ${old.length} emoji sets`); // eslint-disable-line no-console
     },
     lastWeek: function() {
@@ -147,5 +147,21 @@ module.exports = {
 
                 return this.today(d);
             });
+    },
+    void: async function(client) {
+        let now = new Date();
+        now.setDate(now.getDate() - 1);
+        let key = `katze:void:*:${this.today(now, true)}`;
+
+        let sets = await client.redis.keys(key);
+        for (let set of sets) {
+            while (true) {
+                let messages = await client.redis.zpopmin(set, 10);
+                if (messages.length == 0) break;
+                messages = messages.filter((message) => message != "1");
+                console.log(messages)
+                await client.bot.deleteMessages(set.split(":")[2], messages);
+            }
+        }
     }
 };

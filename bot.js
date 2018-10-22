@@ -2,11 +2,11 @@
 
 const config = require("./config.json");
 const Casca = require("casca");
-const Redis = require("redis");
+const Redis = require("ioredis");
 const CronJob = require("cron").CronJob;
 const Twitter = require("twitter");
 const prettyms = require("pretty-ms");
-require("bluebird").promisifyAll(Redis);
+Redis.Promise = require("bluebird");
 
 // monkaS
 require("jimp").prototype.getBuffer = require("bluebird").promisify(require("jimp").prototype.getBuffer);
@@ -74,6 +74,10 @@ client.once("ready", () => {
     client.jobs.cleanup = new CronJob("0 0 * * *", () => {
         client.util.decayEmojis(client).catch(console.error);
     }, null, true);
+
+    client.jobs.void = new CronJob("0 * * * *", () => {
+        client.util.void(client).catch(console.error);
+    });
 });
 
 client.on("info", (message) => {
@@ -154,9 +158,9 @@ const messageCreateMethods = {
             if (!message.channel.guild.emojis.find((emoji) => emoji.id == id)) return;
 
             if (add === false) {
-                await client.redis.zincrbyAsync(ymd, -1, id); // remove one from the emoji set
+                await client.redis.zincrby(ymd, -1, id); // remove one from the emoji set
             } else {
-                await client.redis.zincrbyAsync(ymd, 1, id);
+                await client.redis.zincrby(ymd, 1, id);
             }
         }
     },
@@ -168,7 +172,7 @@ const messageCreateMethods = {
 
         let key = `katze:activity:${message.channel.guild.id}:${message.member.id}`;
 
-        await client.redis.incrAsync(key);
+        await client.redis.incr(key);
 
         if (!~message.member.roles.indexOf(row.activity)) {
             if (message.channel.guild.roles.get(row.activity)) {
@@ -230,9 +234,9 @@ const messageCreateMethods = {
         let row = await client.getGuild(message.channel.guild.id);
 
         let key = `katze:vore:${message.channel.guild.id}`;
-        let reply = await client.redis.getAsync(key);
+        let reply = await client.redis.get(key);
 
-        await client.redis.setAsync(key, message.timestamp.toString());
+        await client.redis.set(key, message.timestamp.toString());
 
         if (!reply) return;
         reply = Number(reply);
@@ -240,6 +244,13 @@ const messageCreateMethods = {
         if (reply + THIRTY_MINUTES <= message.timestamp && row.vtrack) {
             await message.channel.createMessage(`user:<@${message.author.id}> has broken the silence and said the cursed word.\nThis server has gone ${prettyms(message.timestamp - reply, { verbose: true })} since the last infraction.`);
         }
+    },
+    voidMessages: async function(message) {
+        let row = await client.getGuild(message.channel.guild.id);
+        if (!row.void == message.channel.id) return;
+
+        let key = `katze:void:${message.channel.id}:${client.util.today(null, true)}`;
+        await client.redis.zincrby(key, 1, message.id);
     }
 };
 
@@ -445,7 +456,7 @@ const guildMemberAddMethods = {
         let row = await client.getGuild(guild.id);
         if (!row.rolestate) return;
 
-        let reply = await client.redis.getAsync(`katze:rolestate:${guild.id}:${member.id}`);
+        let reply = await client.redis.get(`katze:rolestate:${guild.id}:${member.id}`);
         if (reply) reply = JSON.parse(reply);
 
         if (!reply || !reply.length) return;
