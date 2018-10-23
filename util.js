@@ -16,7 +16,7 @@ module.exports = {
         data.folder = data.folder.filter((file) => !file.includes(row.current));
         let chosen = this.rand(data.folder);
         if (override) chosen = override;
-        let image = await client.fs.readFile(`${data.path}/${chosen}`);
+        let image = await client.fs.readFileAsync(`${data.path}/${chosen}`);
 
         if (row.meme && Math.floor(Math.random() * 10) === 0) {
             image = await this.meme(image);
@@ -47,9 +47,9 @@ module.exports = {
     getFolder: async function(client, guild) {
         let folder, path;
         try {
-            folder = await client.fs.readdir(path = `./guilds/${guild.id}`);
+            folder = await client.fs.readdirAsync(path = `./guilds/${guild.id}`);
 
-            if (folder.length === 0) {
+            if (!folder || folder.length === 0) {
                 throw "no_images";
             } else if (folder.length === 1) {
                 throw "one_image";
