@@ -250,7 +250,7 @@ const messageCreateMethods = {
         if (!row.void == message.channel.id) return;
 
         let key = `katze:void:${message.channel.id}:${client.util.today(null, true)}`;
-        await client.redis.zincrby(key, 1, message.id);
+        await client.redis.rpush(key, message.id);
     }
 };
 

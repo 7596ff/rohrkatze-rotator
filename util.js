@@ -156,11 +156,21 @@ module.exports = {
         let sets = await client.redis.keys(key);
         for (let set of sets) {
             while (true) {
-                let messages = await client.redis.zpopmin(set, 10);
-                if (messages.length == 0) break;
-                messages = messages.filter((message) => message != "1");
-                console.log(messages)
-                await client.bot.deleteMessages(set.split(":")[2], messages);
+                let messages = [];
+                while (true) {
+                    let id = await client.redis.lpop(key);
+                    if (id) {
+                        messages.push(id);
+                    } else {
+                        break;
+                    }
+                }
+
+                if (messages.length === 0) {
+                    break;
+                }
+
+                await client.bot.deleteMessages(set.split(":")[2], messages, "void channel");
             }
         }
     }
