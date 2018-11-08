@@ -4,7 +4,7 @@ const Jimp = require("jimp");
 module.exports = {
     today: function(now, hr)  {
         if (!now) now = new Date();
-        return `${now.getFullYear()}${("00" + now.getMonth()).slice(-2)}${("00" + now.getDate()).slice(-2)}${hr ? now.getHours() : ""}`;
+        return `${now.getFullYear()}${("00" + (1 + now.getMonth())).slice(-2)}${("00" + now.getDate()).slice(-2)}${hr ? now.getHours() : ""}`;
     },
     rand: function(array) {
         return array[Math.floor(Math.random() * array.length)];
@@ -153,25 +153,29 @@ module.exports = {
         now.setDate(now.getDate() - 1);
         let key = `katze:void:*:${this.today(now, true)}`;
 
+        let count = 0;
         let sets = await client.redis.keys(key);
         for (let set of sets) {
+            let channelID = set.split(":")[2];
+
             while (true) {
                 let messages = [];
-                while (true) {
-                    let id = await client.redis.lpop(key);
-                    if (id) {
-                        messages.push(id);
-                    } else {
-                        break;
-                    }
+
+                while (messages.length < 200) {
+                    let id = await client.redis.lpop(set);
+                    id ? messages.push(id) : break;
+                    count += 1;
                 }
 
-                if (messages.length === 0) {
-                    break;
-                }
+                await client.bot.deleteMessages(channelID, messages, "void channel");
 
-                await client.bot.deleteMessages(set.split(":")[2], messages, "void channel");
+                let first_item = await client.redis.lpop(set);
+                first_item ? messages.push(first_item) : break;
+                count += 1;
             }
         }
+
+        return count;
     }
 };
+

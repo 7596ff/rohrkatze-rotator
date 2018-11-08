@@ -76,7 +76,12 @@ client.once("ready", () => {
     }, null, true);
 
     client.jobs.void = new CronJob("0 * * * *", () => {
-        client.util.void(client).catch(console.error);
+        client.util.void(client).then((count) => {
+            console.log(`${new Date().toJSON()} finished void, deleted ${count} messages`);
+        }).catch((error) => {
+            console.error(`${new Date().toJSON()} error voiding messages`);
+            console.error(error);
+        });
     });
 });
 
