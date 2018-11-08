@@ -163,14 +163,26 @@ module.exports = {
 
                 while (messages.length < 200) {
                     let id = await client.redis.lpop(set);
-                    id ? messages.push(id) : break;
+
+		    if (id) {
+                       messages.push(id);
+		    } else {
+		        break;
+		    }
+
                     count += 1;
                 }
 
                 await client.bot.deleteMessages(channelID, messages, "void channel");
 
                 let first_item = await client.redis.lpop(set);
-                first_item ? messages.push(first_item) : break;
+
+                if (first_item) {
+                    messages.push(first_item);
+		} else {
+                    break;
+		}
+
                 count += 1;
             }
         }
