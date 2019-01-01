@@ -36,7 +36,7 @@ async function exec(message, ctx) {
     let filename = `guilds/${message.channel.guild.id}/${message.id}.png`;
     await ctx.client.fs.writeFileAsync(filename, img.body);
 
-    ctx.success(ctx.strings.get("pls_success", filename));
+    ctx.success(ctx.strings.get("pls_success", filename.split("/")[2]));
     return img.body;
 }
 
@@ -52,3 +52,4 @@ module.exports = {
     checks,
     exec
 };
+
