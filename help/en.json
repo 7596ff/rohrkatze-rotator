@@ -133,5 +133,9 @@
             "remove": "Removes a color role from yourself.",
             "sixteen": "Creates sixteen color roles based on Material Design 2014 spec. Preview: <https://o.lol-sa.me/76f0b3.png>"
         }
+    },
+    "steal": {
+        "usage": "%ssteal <emoji> <name>",
+        "description": "Steals a custom emoji from another server and uploads it here. Requires manage emojis."
     }
 }
