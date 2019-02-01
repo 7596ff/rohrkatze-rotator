@@ -114,7 +114,7 @@ client.on("command", (output, result) => {
 
 const customEmoji = /<a?:[a-zA-Z1-9-_]{2,}:\d{17,20}>/g;
 const tweetRegex = /(?:^|\W)https?:\/\/(?:mobile\.)?twitter\.com\/\S+\/(\d+)(?:$|\W)/gm;
-const voreRegex = /\b[V|v][O|Ò|Ó|Ô|Õ|Ö|o|ò|ó|ô|õ|ö|ᴑ|о][R|r][E|È|É|Ê|Ë|e|è|é|ê|ë][S|s]?\b/g;
+const Regex = /\b[Vv][OÒÓÔÕÖoòóôõöᴑо][Rr][EÈÉÊËeèéêë][Ss]?\b/g;
 
 const THIRTY_MINUTES = 1800000;
 
