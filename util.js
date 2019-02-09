@@ -1,6 +1,9 @@
 const FuzzySet = require("fuzzyset.js");
 const Jimp = require("jimp");
 
+const queue = [];
+var queueStarted = false;
+
 module.exports = {
     today: function(now, hr)  {
         if (!now) now = new Date();
@@ -8,6 +11,28 @@ module.exports = {
     },
     rand: function(array) {
         return array[Math.floor(Math.random() * array.length)];
+    },
+    sleep: function(ms) {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, ms);
+        });
+    },
+    processQueue: async function() {
+        let data = queue.pop();
+        await data.guild.edit({ icon: data.icon });
+    },
+    startQueue: async function() {
+        while (queue.length > 0) {
+            await this.processQueue();
+            await this.sleep(1000);
+        }
+        queueStarted = false;
+    },
+    delay: async function(guild, icon) {
+        queue.push({ guild, icon });
+        if (queueStarted) return;
+        queueStarted = true;
+        this.startQueue();
     },
     rotate: async function(client, guild, override) {
         let data = await this.getFolder(client, guild);
@@ -22,9 +47,10 @@ module.exports = {
             image = await this.meme(image);
         }
 
-        await guild.edit({
-            icon: "data:image/jpg;base64," + image.toString("base64")
-        });
+        this.delay(guild, "data:image/jpg;base64," + image.toString("base64"));
+        // await guild.edit({
+        //     icon: "data:image/jpg;base64," + image.toString("base64")
+        // });
 
         await client.pg.query({
             text: "UPDATE guilds SET current = $1, lasttime = $2 WHERE id = $3;",
