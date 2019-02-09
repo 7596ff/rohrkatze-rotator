@@ -47,7 +47,7 @@ module.exports = {
             image = await this.meme(image);
         }
 
-        this.delay(guild, "data:image/jpg;base64," + image.toString("base64"));
+        await this.delay(guild, "data:image/jpg;base64," + image.toString("base64"));
         // await guild.edit({
         //     icon: "data:image/jpg;base64," + image.toString("base64")
         // });
