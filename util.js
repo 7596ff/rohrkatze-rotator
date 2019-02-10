@@ -47,10 +47,10 @@ module.exports = {
             image = await this.meme(image);
         }
 
-        await this.delay(guild, "data:image/jpg;base64," + image.toString("base64"));
-        // await guild.edit({
-        //     icon: "data:image/jpg;base64," + image.toString("base64")
-        // });
+        // await this.delay(guild, "data:image/jpg;base64," + image.toString("base64"));
+        await guild.edit({
+            icon: "data:image/jpg;base64," + image.toString("base64")
+        });
 
         await client.pg.query({
             text: "UPDATE guilds SET current = $1, lasttime = $2 WHERE id = $3;",
