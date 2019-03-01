@@ -1,7 +1,7 @@
 const request = require("snekfetch");
 
 async function exec(message, ctx) {
-    let response = await snekfetch.get(ctx.content);
+    let response = await request.get(ctx.content);
     await ctx.client.bot.editSelf( { avatar: "data:image/jpg;base64," + response.body.toString("base64") });
 }
 
