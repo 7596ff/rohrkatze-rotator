@@ -130,5 +130,28 @@
         "starmin": "INT",
         "vtrack": "BOOLEAN",
         "void": "BIGINT"
+    },
+    "2019-03-04T03:38:06.134Z": {
+        "id": "BIGINT NOT NULL",
+        "name": "TEXT",
+        "channelCD": "INT DEFAULT 0",
+        "memberCD": "INT DEFAULT 0",
+        "locale": "TEXT DEFAULT 'en'",
+        "activity": "BIGINT",
+        "timeout": "INT",
+        "meme": "BOOLEAN",
+        "dont": "BOOLEAN",
+        "emoji": "TEXT DEFAULT '⭐'",
+        "slowrole": "BIGINT",
+        "starboard": "BIGINT",
+        "pinboardin": "BIGINT",
+        "pinboardout": "BIGINT",
+        "cleanpins": "BOOLEAN",
+        "rolestate": "BOOLEAN",
+        "lasttime": "BIGINT",
+        "current": "BIGINT",
+        "twig": "BOOLEAN",
+        "starmin": "INT",
+        "vtrack": "BOOLEAN"
     }
 }

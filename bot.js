@@ -74,15 +74,6 @@ client.once("ready", () => {
     client.jobs.cleanup = new CronJob("0 0 * * *", () => {
         client.util.decayEmojis(client).catch(console.error);
     }, null, true);
-
-    client.jobs.void = new CronJob("0 * * * *", () => {
-        client.util.void(client).then((count) => {
-            console.log(`${new Date().toJSON()} finished void, deleted ${count} messages`);
-        }).catch((error) => {
-            console.error(`${new Date().toJSON()} error voiding messages`);
-            console.error(error);
-        });
-    });
 });
 
 client.on("info", (message) => {
@@ -249,13 +240,6 @@ const messageCreateMethods = {
         if (reply + THIRTY_MINUTES <= message.timestamp && row.vtrack) {
             await message.channel.createMessage(`user:<@${message.author.id}> has broken the silence and said the cursed word.\nThis server has gone ${prettyms(message.timestamp - reply, { verbose: true })} since the last infraction.`);
         }
-    },
-    voidMessages: async function(message) {
-        let row = await client.getGuild(message.channel.guild.id);
-        if (!row.void == message.channel.id) return;
-
-        let key = `katze:void:${message.channel.id}:${client.util.today(null, true)}`;
-        await client.redis.rpush(key, message.id);
     }
 };
 
