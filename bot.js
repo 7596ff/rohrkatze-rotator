@@ -214,13 +214,6 @@ const messageCreateMethods = {
                 let quoted = `https://twitter.com/${reply.quoted_status.user.screen_name}/status/${reply.quoted_status.id_str}`;
                 await message.channel.createMessage(quoted);
             }
-
-            await sleep(100); // :ancap:
-
-            message = await client.bot.getMessage(message.channel.id, message.id);
-            if (message.embeds[0].description.endsWith("...") && !reply.full_text.endsWith("...")) {
-                await message.channel.createMessage(`**Full Tweet Text**:\n\n${reply.full_text}`);
-            }
         }
     },
     checkForVore: async function(message) {
