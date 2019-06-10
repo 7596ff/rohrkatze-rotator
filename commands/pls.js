@@ -7,11 +7,11 @@ async function exec(message, ctx) {
         url = message.mentions[0].staticAvatarURL.replace("jpg?size=128", "png?size=2048");
     }
 
-    if (/(https?:\/\/.*\.(?:png|jpg|jpeg))/g.test(ctx.content)) {
+    if (/(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/g.test(ctx.content)) {
         url = ctx.content;
     }
 
-    if (message.attachments.length && /(https?:\/\/.*\.(?:png|jpg|jpeg))/g.test(message.attachments[0].url)) {
+    if (message.attachments.length && /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/g.test(message.attachments[0].url)) {
         url = message.attachments[0].url;
     }
 
