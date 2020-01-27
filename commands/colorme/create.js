@@ -5,7 +5,7 @@ async function exec(message, ctx) {
         return ctx.failure(ctx.strings.get("colorme_invalid_hex", ctx.options[1]));
     }
 
-    let color = parseInt(ctx.options[1], 16);
+    let color = parseInt(ctx.options[1].toUpperCase(), 16);
     let colorHex = color.toString(16);
 
     let role = await message.channel.guild.createRole({
