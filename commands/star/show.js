@@ -4,12 +4,16 @@ async function embed(ctx, data) {
             icon_url: data.message.member.avatarURL,
             name: data.message.member.nick || data.message.member.username
         },
-        description: data.message.content  || "",
+        description: `[Click to jump to this post.](https://discord.com/channels/${data.message.channel.guild.id}/${data.message.channel.id}/${data.message.id})`,
         footer: {
             text: `ID: ${data.message.id}`
         },
         timestamp: new Date(data.message.timestamp)
     };
+
+    if (data.message.content) {
+        embed.description += `\n${data.message.content}`;
+    }
 
     if (data.message.member.roles.length > 0) {
         let colorRole = data.message.member.roles
